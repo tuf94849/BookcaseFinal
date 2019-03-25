@@ -11,10 +11,10 @@ import android.view.ViewGroup;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class BookDetailsFragment extends Fragment {
+public class ViewPagerFragment extends Fragment {
 
 
-    public BookDetailsFragment() {
+    public ViewPagerFragment() {
         // Required empty public constructor
     }
 
@@ -23,8 +23,7 @@ public class BookDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_book_details, container, false);
-        return v;
+        return inflater.inflate(R.layout.fragment_view_pager, container, false);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.bookcase;
 
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
         Books.add("Fever 1793");
         Books.add("The Road");
         Books.add("Night");
+
+        ViewPager viewPager = findViewById(R.id.BookViewPager);
 
     }
 }
