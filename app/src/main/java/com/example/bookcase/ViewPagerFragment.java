@@ -1,6 +1,7 @@
 package com.example.bookcase;
 
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -37,6 +38,19 @@ public class ViewPagerFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_view_pager, container, false);
         vp = v.findViewById(R.id.viewPager);
 
+        Resources res = this.getResources();
+        final String[] booksArr = res.getStringArray(R.array.bookArr);
+
+        bdFragment = new BookDetailsFragment();
+        vp = v.findViewById(R.id.viewPager);
+        pagerAdapter = new PagerAdapter(getChildFragmentManager());
+
+        for(int i = 0; i < booksArr.length; i++){
+            bdFragment = BookDetailsFragment.newInstance(booksArr[i]);
+            pagerAdapter.add(bdFragment);
+        }
+
+        vp.setAdapter(pagerAdapter);
 
         return v;
     }
