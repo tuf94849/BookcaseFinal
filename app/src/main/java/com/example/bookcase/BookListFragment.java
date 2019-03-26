@@ -2,6 +2,7 @@ package com.example.bookcase;
 
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -46,8 +47,10 @@ public class BookListFragment extends Fragment {
         View v =  inflater.inflate(R.layout.fragment_book_list, container, false);
         listView = v.findViewById(R.id.BookListView);
 
+        Resources res = this.getResources();
+        final String[] booksArr = res.getStringArray(R.array.bookArr);
+        listView.setAdapter(new ArrayAdapter<>(c, android.R.layout.simple_list_item_1, booksArr));
 
-        ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, Books);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
