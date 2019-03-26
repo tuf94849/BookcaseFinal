@@ -1,11 +1,13 @@
 package com.example.bookcase;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -22,7 +24,9 @@ public class BookListFragment extends Fragment {
         // Required empty public constructor
     }
 
-
+    ListView listView;
+    Context c;
+    public BookInterface listener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,16 +44,43 @@ public class BookListFragment extends Fragment {
         Books.add("Night");
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_book_list, container, false);
-        ListView BookListView = v.findViewById(R.id.BookListView);
+        listView = v.findViewById(R.id.BookListView);
+
 
         ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, Books);
 
-        BookListView.setAdapter(stringArrayAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String bookTitle = (String) parent.getItemAtPosition(position);
+                ((BookInterface) c).bookPicked(bookTitle);
+            }
+        });
 
-
-
+        //BookListView.setAdapter(stringArrayAdapter);
 
         return v;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof BookInterface) {
+            listener = (BookInterface) context;
+        } else {
+            throw new RuntimeException(context.toString());
+        }
+        this.c = context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener = null;
+    }
+
+    public interface BookInterface {
+        void bookPicked(String bookTitle);
     }
 
 }
