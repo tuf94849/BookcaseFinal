@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         Books.add("The Road");
         Books.add("Night");
 
-        ViewPager viewPager = findViewById(R.id.BookViewPager);
+        //ViewPager viewPager = findViewById(R.id.BookViewPager);
 
     }
 }
