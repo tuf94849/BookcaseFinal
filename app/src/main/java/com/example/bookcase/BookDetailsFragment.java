@@ -51,6 +51,12 @@ public class BookDetailsFragment extends Fragment {
     }
 
 
+    public void bookPicked (String bookPicked){
+        //Log.d("Book", bookSelected);
+        tv.setText(bookPicked);
+    }
+
+
 
 
 }
