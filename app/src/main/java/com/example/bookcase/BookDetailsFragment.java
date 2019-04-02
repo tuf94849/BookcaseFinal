@@ -3,6 +3,7 @@ package com.example.bookcase;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,32 +14,35 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class BookDetailsFragment extends Fragment {
 
-
     public BookDetailsFragment() {
         // Required empty public constructor
     }
 
-    TextView tv;
-    String bookPicked;
-    Button btn;
-    ImageView imageView;
-    EditText editText;
-    String title;
-    String author;
-    int publishYear;
-    public static final String BOOK_KEY = "bookTitle";
+    TextView textView; Button button;
+    ImageView imageView; EditText editText;
+    String bookSelected;
+    String title, author, publishyr;
+    public static final String BOOK_KEY = "myBook";
+    Book pagerBooks;
 
-    public static BookDetailsFragment newInstance(String book) {
+    public static BookDetailsFragment newInstance(Book bookList) {
         BookDetailsFragment fragment = new BookDetailsFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(BOOK_KEY, book);
+        bundle.putParcelable(BOOK_KEY, bookList);
         fragment.setArguments(bundle);
+        //Log.d("Passed on Book", fragment.getArguments().getParcelable(BOOK_KEY).toString());
         return fragment;
     }
 
@@ -46,45 +50,33 @@ public class BookDetailsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(getArguments() != null){
-            bookPicked = getArguments().getString(BOOK_KEY);
+            pagerBooks = getArguments().getParcelable(BOOK_KEY);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_book_details, container, false);
-        tv = v.findViewById(R.id.bookTitle);
+        View view = inflater.inflate(R.layout.fragment_book_details, container, false);
+        textView = view.findViewById(R.id.bookTitle);
+        imageView = view.findViewById(R.id.bookImage);
+        button = view.findViewById(R.id.button);
+        editText = view.findViewById(R.id.searchBar);
+        if(getArguments() != null) {
+            displayBook(pagerBooks);
+        }
 
-        imageView = v.findViewById(R.id.bookImage);
-        btn = v.findViewById(R.id.btnSearch);
-        editText = v.findViewById(R.id.searchBar);
-
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String searchBook = editText.getText().toString();
-
-            }
-        });
-        //tv.setText(bookPicked);
-        //bookPicked(bookPicked);
-
-        return v;
+        return view;
     }
 
-
-    public void bookPicked (Book book){
-        author = book.getAuthor();
-        title = book.getTitle(); publishYear = book.getPublished();
-        tv.setText(" \"" + title + "\" ");
-        tv.append(", " + author);
-        tv.append(", " + publishYear);
-        String imageURL = book.getCoverURL();
+    public void displayBook(Book bookObj){
+        author = bookObj.getAuthor();
+        title = bookObj.getTitle(); publishyr = bookObj.getPublished();
+        textView.setText(" \"" + title + "\" "); textView.append(", " + author); textView.append(", " + publishyr);
+        textView.setTextSize(20);
+        String imageURL = bookObj.getCoverURL();
         Picasso.get().load(imageURL).into(imageView);
     }
-
 
 
 

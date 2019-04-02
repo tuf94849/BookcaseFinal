@@ -33,111 +33,81 @@ import java.util.ArrayList;
 public class BookListFragment extends Fragment {
 
 
+    private BookInterface mListener;
+
     public BookListFragment() {
         // Required empty public constructor
     }
 
+    public static BookListFragment newInstance(String param1, String param2) {
+        BookListFragment fragment = new BookListFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
     ListView listView;
     Context c;
-    public BookInterface listener;
-
     ArrayList<String> bookList;
     Book books;
-    JSONArray bookArray;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v =  inflater.inflate(R.layout.fragment_book_list, container, false);
-        listView = v.findViewById(R.id.BookListView);
+        View v = inflater.inflate(R.layout.fragment_book_list, container, false);
 
+        listView = v.findViewById(R.id.bookList);
         bookList = new ArrayList<>();
-        downloadBook();
 
         return v;
+    }
+
+    public void getBooks(final JSONArray bookArray){
+        for(int i = 0; i < bookArray.length(); i++){
+            try {
+                JSONObject jsonData = bookArray.getJSONObject(i);
+                String title = jsonData.getString("title");
+                bookList.add(title);
+                Log.d("Book", bookArray.get(i).toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter(c, android.R.layout.simple_list_item_1, bookList);
+        listView.setAdapter(arrayAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    books = new Book(bookArray.getJSONObject(position));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                ((BookInterface) c).bookSelected(books);
+            }
+        });
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof BookInterface) {
-            listener = (BookInterface) context;
+            mListener = (BookInterface) context;
         } else {
-            throw new RuntimeException(context.toString());
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
         }
         this.c = context;
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        listener = null;
-    }
-
     public interface BookInterface {
-        void bookPicked(Book book);
+        void bookSelected(Book bookObj);
     }
-
-    public void downloadBook() {
-        new Thread() {
-            public void run() {
-                String urlString = "https://kamorris.com/lab/audlib/booksearch.php";
-                try {
-                    URL url = new URL(urlString);
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
-                    StringBuilder builder = new StringBuilder();
-                    String tmpString;
-                    while ((tmpString = reader.readLine()) != null) {
-                        builder.append(tmpString);
-                    }
-                    Message msg = Message.obtain();
-                    msg.obj = builder.toString();
-                    urlHandler.sendMessage(msg);
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }.start();
-    }
-
-    Handler urlHandler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
-            try {
-                bookArray = new JSONArray((String) msg.obj);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            for(int i = 0; i < bookArray.length(); i++){
-                try {
-                    JSONObject jsonData = bookArray.getJSONObject(i);
-                    String title = jsonData.getString("title");
-                    bookList.add(title);
-                    Log.d("Book ", bookArray.getString(i));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter(c, android.R.layout.simple_list_item_1, bookList);
-            listView.setAdapter(arrayAdapter);
-
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    try {
-                        books = new Book(bookArray.getJSONObject(position));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    //books = (Book) parent.getItemAtPosition(position);
-                    ((BookInterface) c).bookPicked(books);
-                }
-            });
-            return false;
-        }
-    });
 
 }

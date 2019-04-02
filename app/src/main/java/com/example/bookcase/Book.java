@@ -8,16 +8,13 @@ import org.json.JSONObject;
 
 public class Book implements Parcelable {
 
-    public int id;
-    public String title;
-    public String author;
-    public int published;
-    public String coverURL;
+    private int id;
+    private String title, author, coverURL, published;
 
     public Book(JSONObject jsonBook) throws JSONException {
         this.title = jsonBook.getString("title"); this.author = jsonBook.getString("author");
         this.coverURL = jsonBook.getString("cover_url");
-        this.id = jsonBook.getInt("book_id"); this.published = jsonBook.getInt("published");
+        this.id = jsonBook.getInt("book_id"); this.published = jsonBook.getString("published");
     }
 
     protected Book(Parcel in) {
@@ -25,7 +22,7 @@ public class Book implements Parcelable {
         title = in.readString();
         author = in.readString();
         coverURL = in.readString();
-        published = in.readInt();
+        published = in.readString();
     }
 
     public static final Creator<Book> CREATOR = new Creator<Book>() {
@@ -40,50 +37,45 @@ public class Book implements Parcelable {
         }
     };
 
-    //setters
     public void setId(int id) {
-
         this.id = id;
     }
-    public void setPublished(int published)
-    {
+
+    public void setPublished(String published) {
         this.published = published;
     }
-    public void setTitle(String title)
-    {
+
+    public void setTitle(String title) {
         this.title = title;
     }
-    public void setAuthor(String author)
-    {
+
+    public void setAuthor(String author) {
         this.author = author;
     }
-    public void setCoverURL(String coverURL)
-    {
+
+    public void setCoverURL(String coverURL) {
         this.coverURL = coverURL;
     }
 
-    //getters
-    public int getId()
-    {
+    public int getId() {
         return id;
     }
-    public int getPublished()
-    {
+
+    public String getPublished() {
         return published;
     }
-    public String getTitle()
-    {
+
+    public String getTitle() {
         return title;
     }
-    public String getAuthor()
-    {
+
+    public String getAuthor() {
         return author;
     }
-    public String getCoverURL()
-    {
+
+    public String getCoverURL() {
         return coverURL;
     }
-
 
     @Override
     public int describeContents() {
@@ -96,7 +88,6 @@ public class Book implements Parcelable {
         dest.writeString(title);
         dest.writeString(author);
         dest.writeString(coverURL);
-        dest.writeInt(published);
-
+        dest.writeString(published);
     }
 }
