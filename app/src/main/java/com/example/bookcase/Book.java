@@ -42,35 +42,45 @@ public class Book implements Parcelable {
 
     //setters
     public void setId(int id) {
+
         this.id = id;
     }
-    public void setPublished(int published) {
+    public void setPublished(int published)
+    {
         this.published = published;
     }
-    public void setTitle(String title) {
+    public void setTitle(String title)
+    {
         this.title = title;
     }
-    public void setAuthor(String author) {
+    public void setAuthor(String author)
+    {
         this.author = author;
     }
-    public void setCoverURL(String coverURL) {
+    public void setCoverURL(String coverURL)
+    {
         this.coverURL = coverURL;
     }
 
     //getters
-    public int getId() {
+    public int getId()
+    {
         return id;
     }
-    public int getPublished() {
+    public int getPublished()
+    {
         return published;
     }
-    public String getTitle() {
+    public String getTitle()
+    {
         return title;
     }
-    public String getAuthor() {
+    public String getAuthor()
+    {
         return author;
     }
-    public String getCoverURL() {
+    public String getCoverURL()
+    {
         return coverURL;
     }
 
