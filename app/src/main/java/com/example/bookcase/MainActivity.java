@@ -60,7 +60,8 @@ public class MainActivity extends AppCompatActivity implements BookListFragment.
     }
 
     @Override
-    public void bookPicked(String bookTitle) {
-        detailsFragment.bookPicked(bookTitle);
+    public void bookPicked(Book book) {
+
+        detailsFragment.bookPicked(book);
     }
 }
