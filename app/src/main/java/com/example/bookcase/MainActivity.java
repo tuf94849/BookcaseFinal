@@ -23,7 +23,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements BookListFragment.BookInterface {
 
-    
+
 
     boolean singlePane;
     BookDetailsFragment detailsFragment;
@@ -58,7 +58,9 @@ public class MainActivity extends AppCompatActivity implements BookListFragment.
             @Override
             public void onClick(View v) {
                 searchBook = searchText.getText().toString();
-                downloadBook(searchBook);
+
+                downloadBook(searchText.getText().toString());
+
             }
         });
         btnSearch.performClick();
