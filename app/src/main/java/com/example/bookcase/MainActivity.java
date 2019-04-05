@@ -32,7 +32,8 @@ public class MainActivity extends AppCompatActivity implements BookListFragment.
     EditText searchText;
     Button btnSearch;
     JSONArray bookArray;
-    String searchBook;
+
+    String searchWord;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements BookListFragment.
         setContentView(R.layout.activity_main);
         searchText = findViewById(R.id.searchText);
         btnSearch = findViewById(R.id.searchButton);
+
 
         singlePane = findViewById(R.id.container_2) == null;
         detailsFragment = new BookDetailsFragment();
@@ -57,9 +59,9 @@ public class MainActivity extends AppCompatActivity implements BookListFragment.
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                searchBook = searchText.getText().toString();
+                searchWord = searchText.getText().toString();
 
-                downloadBook(searchText.getText().toString());
+                downloadBook(searchWord);
 
             }
         });
@@ -95,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements BookListFragment.
                     e.printStackTrace();
                 }
             }
+
         }.start();
     }
 
