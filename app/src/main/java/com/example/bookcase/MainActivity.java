@@ -23,21 +23,27 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements BookListFragment.BookInterface {
 
+    
 
-
-/*
     boolean singlePane;
     BookDetailsFragment detailsFragment;
     ViewPagerFragment viewPagerFragment;
+    BookListFragment listFragment;
+    EditText searchText;
+    Button btnSearch;
+    JSONArray bookArray;
+    String searchBook;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        searchText = findViewById(R.id.searchText);
+        btnSearch = findViewById(R.id.searchButton);
 
         singlePane = findViewById(R.id.container_2) == null;
         detailsFragment = new BookDetailsFragment();
-        BookListFragment listFragment = new BookListFragment();
+        listFragment = new BookListFragment();
         viewPagerFragment = new ViewPagerFragment();
 
         if(!singlePane){
@@ -47,66 +53,15 @@ public class MainActivity extends AppCompatActivity implements BookListFragment.
             addFragment(viewPagerFragment, R.id.container_3);
         }
 
-    }
 
-    public void addFragment(Fragment fragment, int id){
-        getSupportFragmentManager().
-                beginTransaction().
-                replace(id, fragment).
-                addToBackStack(null).
-                commit();
-    }
-
-    @Override
-    public void bookPicked(Book book) {
-
-        detailsFragment.bookPicked(book);
-    }
-
-    public void searchBook(JSONArray bookArray) {
-
-        detailsFragment.searchBook(bookArray);
-    }
-
-    public void getBooks(Book bookObj) {
-        viewPagerFragment.getBooks(bookObj);
-    }
-    */
-boolean singlePane;
-    BookDetailsFragment detailsFragment;
-    ViewPagerFragment viewPagerFragment;
-    BookListFragment listFragment;
-    EditText searchText; Button button;
-    JSONArray bookArray; String searchBook;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        searchText = findViewById(R.id.searchText);
-        button = findViewById(R.id.searchButton);
-
-        singlePane = findViewById(R.id.container_2) == null;
-        detailsFragment = new BookDetailsFragment();
-        listFragment = new BookListFragment();
-        viewPagerFragment = new ViewPagerFragment();
-
-        button.setOnClickListener(new View.OnClickListener() {
+        btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 searchBook = searchText.getText().toString();
-
+                downloadBook(searchBook);
             }
         });
-        downloadBook();
-
-        if(!singlePane){
-            addFragment(listFragment, R.id.container_1);
-            addFragment(detailsFragment, R.id.container_2);
-        } else {
-            addFragment(viewPagerFragment, R.id.container_3); //listFragment gets replaced immediately
-        }
-
+        btnSearch.performClick();
     }
 
     public void addFragment(Fragment fragment, int id){
@@ -117,11 +72,10 @@ boolean singlePane;
                 commit();
     }
 
-    public void downloadBook() {
+    public void downloadBook(final String search) {
         new Thread() {
             public void run() {
                 try {
-                    String search = "Great Expectations";
                     String urlString = "https://kamorris.com/lab/audlib/booksearch.php?search=" + search;
                     URL url = new URL(urlString);
                     BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
@@ -159,10 +113,11 @@ boolean singlePane;
         }
     });
 
+    @Override
     public void bookSelected(Book bookObj) {
-
         detailsFragment.displayBook(bookObj);
     }
+
 
 
 

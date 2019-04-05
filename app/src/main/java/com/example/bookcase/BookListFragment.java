@@ -32,7 +32,6 @@ import java.util.ArrayList;
  */
 public class BookListFragment extends Fragment {
 
-
     private BookInterface mListener;
 
     public BookListFragment() {
@@ -53,8 +52,9 @@ public class BookListFragment extends Fragment {
 
     ListView listView;
     Context c;
-    ArrayList<String> bookList;
+    ArrayList<Book> bookList;
     Book books;
+    BookAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,27 +68,28 @@ public class BookListFragment extends Fragment {
     }
 
     public void getBooks(final JSONArray bookArray){
+        bookList.clear();
+        //ArrayAdapter<String> arrayAdapter = new ArrayAdapter(c, android.R.layout.simple_list_item_1, bookList);
         for(int i = 0; i < bookArray.length(); i++){
             try {
-                JSONObject jsonData = bookArray.getJSONObject(i);
-                String title = jsonData.getString("title");
-                bookList.add(title);
-                Log.d("Book", bookArray.get(i).toString());
+                bookList.add(new Book(bookArray.getJSONObject(i)));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter(c, android.R.layout.simple_list_item_1, bookList);
-        listView.setAdapter(arrayAdapter);
+        Log.d("Book List", bookList.toString());
+        updateList();
+    }
+
+    private void updateList(){
+        adapter = new BookAdapter(c, bookList);
+        adapter.notifyDataSetChanged();
+        listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                try {
-                    books = new Book(bookArray.getJSONObject(position));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                books = bookList.get(position);
                 ((BookInterface) c).bookSelected(books);
             }
         });
@@ -109,5 +110,4 @@ public class BookListFragment extends Fragment {
     public interface BookInterface {
         void bookSelected(Book bookObj);
     }
-
 }

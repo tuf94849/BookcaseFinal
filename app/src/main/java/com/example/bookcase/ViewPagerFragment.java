@@ -3,6 +3,7 @@ package com.example.bookcase;
 
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -42,33 +43,35 @@ public class ViewPagerFragment extends Fragment {
 
     }
 
-    ViewPager viewPager;
+    ViewPager vp;
     PagerAdapter pagerAdapter;
     BookDetailsFragment newFragment;
-    Book bookObj;
+    Book book;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_view_pager, container, false);
-        pagerAdapter = new PagerAdapter(getFragmentManager());
-        viewPager = v.findViewById(R.id.viewPager);
+        pagerAdapter = new PagerAdapter(getChildFragmentManager());
+        vp = v.findViewById(R.id.viewPager);
 
         return v;
     }
 
     public void addPager(JSONArray bookArray){
-        for(int i = 0; i < bookArray.length(); i++){
+        for(int i = 0; i < bookArray.length(); i++) {
             try {
+                pagerAdapter.getItemPosition(i);
+                pagerAdapter.notifyDataSetChanged();
                 JSONObject pagerData = bookArray.getJSONObject(i);
-                bookObj = new Book(pagerData);
-                newFragment = BookDetailsFragment.newInstance(bookObj);
+                book = new Book(pagerData);
+                newFragment = BookDetailsFragment.newInstance(book);
                 pagerAdapter.add(newFragment);
-                viewPager.setAdapter(pagerAdapter);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
+        vp.setAdapter(pagerAdapter);
     }
 
     class PagerAdapter extends FragmentStatePagerAdapter{
@@ -85,6 +88,11 @@ public class ViewPagerFragment extends Fragment {
         }
 
         @Override
+        public int getItemPosition(@NonNull Object object) {
+            return PagerAdapter.POSITION_NONE;
+        }
+
+        @Override
         public Fragment getItem(int i) {
             return pagerFragments.get(i);
         }
@@ -94,4 +102,5 @@ public class ViewPagerFragment extends Fragment {
             return pagerFragments.size();
         }
     }
+
 }

@@ -7,9 +7,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Book implements Parcelable {
-
     private int id;
-    private String title, author, coverURL, published;
+    private String title;
+    private String author;
+    private String coverURL;
+    private String published;
 
     public Book(JSONObject jsonBook) throws JSONException {
         this.title = jsonBook.getString("title"); this.author = jsonBook.getString("author");
@@ -37,15 +39,19 @@ public class Book implements Parcelable {
         }
     };
 
+    //setters and getters
     public void setId(int id) {
+
         this.id = id;
     }
 
     public void setPublished(String published) {
+
         this.published = published;
     }
 
     public void setTitle(String title) {
+
         this.title = title;
     }
 
