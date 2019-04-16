@@ -12,6 +12,7 @@ public class Book implements Parcelable {
     private String author;
     private String coverURL;
     private String published;
+    public int duration;
 
     public Book(JSONObject jsonBook) throws JSONException {
         this.title = jsonBook.getString("title"); this.author = jsonBook.getString("author");
@@ -81,6 +82,14 @@ public class Book implements Parcelable {
 
     public String getCoverURL() {
         return coverURL;
+    }
+
+    public void setDuration(int duration){
+        this.duration = duration;
+    }
+
+    public int getDuration(){
+        return duration;
     }
 
     @Override
