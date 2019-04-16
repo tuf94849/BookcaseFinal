@@ -26,6 +26,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import edu.temple.audiobookplayer.AudiobookService;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,6 +35,8 @@ import java.util.ArrayList;
 public class BookListFragment extends Fragment {
 
     private BookInterface mListener;
+
+    AudiobookService.MediaControlBinder mediaControlBinder;
 
     public BookListFragment() {
         // Required empty public constructor
