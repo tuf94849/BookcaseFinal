@@ -35,12 +35,15 @@ public class MainActivity extends AppCompatActivity implements BookListFragment.
 
     String searchWord;
 
+    ArrayList<Book> bookArrayList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         searchText = findViewById(R.id.searchText);
         btnSearch = findViewById(R.id.searchButton);
+        bookArrayList = new ArrayList<>();
 
 
         singlePane = findViewById(R.id.container_2) == null;
@@ -109,10 +112,23 @@ public class MainActivity extends AppCompatActivity implements BookListFragment.
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+            bookArrayList.clear();
+
+            for(int i = 0; i<bookArray.length(); i++){
+                try{
+                    bookArrayList.add(new Book(bookArray.getJSONObject(i)));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+
             if(singlePane) {
-                viewPagerFragment.addPager(bookArray);
+                viewPagerFragment.addPager(bookArrayList);
             } else {
-                listFragment.getBooks(bookArray);
+                listFragment.getBooks(bookArrayList);
             }
             return false;
         }
