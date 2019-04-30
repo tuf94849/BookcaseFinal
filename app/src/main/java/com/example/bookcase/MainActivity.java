@@ -193,4 +193,14 @@ public class MainActivity extends AppCompatActivity implements BookListFragment.
     public void seekBook(int position) {
         mediaControlBinder.seekTo(position);
     }
+
+    public void setProgress(int position, boolean fromUser) {
+        if(fromUser) {
+            mediaControlBinder.seekTo(position);
+        }
+    }
+
+    public void setProgHand(Handler handler) {
+        mediaControlBinder.setProgressHandler(handler);
+    }
 }
