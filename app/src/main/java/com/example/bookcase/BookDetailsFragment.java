@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -103,6 +105,8 @@ public class BookDetailsFragment extends Fragment {
             displayBook(pagerBooks);
         }
 
+
+
         dl_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View V) {
@@ -154,6 +158,8 @@ public class BookDetailsFragment extends Fragment {
                 ((BookDetailsInterface)c).stopBook();
             }
         });
+
+
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -295,6 +301,7 @@ public class BookDetailsFragment extends Fragment {
             }
         }
     }
+
 
 
 
